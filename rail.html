@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rail Reservation Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Rail Data Reservation Management System</h1>
+
+    <!-- Reservation Form -->
+    <center>
+    <form id="reservationForm">
+        <input type="text" id="name" placeholder="Passenger Name" required>
+        <input type="text" id="trainNumber" placeholder="Train Number" required>
+        <input type="date" id="travelDate" required>
+        <input type="text" id="departureStation" placeholder="Departure Station" required>
+        <input type="text" id="arrivalStation" placeholder="Arrival Station" required>
+        <input type="time" id="departureTime" required>
+        <input type="number" id="seatNumber" placeholder="Seat Number" required>
+        <button type="submit">Add Reservation</button>
+    </form>
+    </center>
+
+    <!-- Reservation List -->
+    <h2>Reservation List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Train Number</th>
+                <th>Travel Date</th>
+                <th>Departure Station</th>
+                <th>Arrival Station</th>
+                <th>Departure Time</th>
+                <th>Seat Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="reservationList">
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+</html>

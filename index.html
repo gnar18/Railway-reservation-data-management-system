@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RAIL RESERVATION Data Management</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        #formContainer {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            color: #34495e;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #3498db;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        th:last-child, td:last-child {
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            flex: 1;
+            padding: 8px;
+            background-color: #e74c3c;
+            border-radius: 4px;
+        }
+
+        .action-buttons button.edit {
+            background-color: #f39c12;
+        }
+
+        .action-buttons button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="color: green;">RESERVATION PORTAL</h1>
+    <h2>RAIL RESERVATION DATA MANAGEMENT</h2>
+
+    <div id="formContainer">
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" placeholder="Enter Name...">
+        <label for="emailInput">Email ID:</label>
+        <input type="email" id="emailInput" placeholder="Enter Email...">
+        <label for="numberInput">Mobile Details:</label>
+        <input type="text" id="numberInput" placeholder="Enter Mobile Details...">
+        <label for="addressInput">Address:</label>
+        <textarea id="addressInput" placeholder="Enter Address..."></textarea>
+        <label for="actionInput">Action:</label>
+        <input type="text" id="actionInput" placeholder="Enter Action...">
+        <label for="trainnameInput">Train Name:</label>
+        <input type="text" id="trainnameInput" placeholder="Enter Train Name...">
+        <label for="trainnumberInput">Train Number:</label>
+        <input type="text" id="trainnumberInput" placeholder="Enter Train Number...">
+        <label for="fromInput">From:</label>
+        <input type="text" id="fromInput" placeholder="Enter Departure Station...">
+        <label for="toInput">To:</label>
+        <input type="text" id="toInput" placeholder="Enter Destination Station...">
+        <label for="traintimingInput">Train Timing:</label>
+        <input type="text" id="traintimingInput" placeholder="Enter Train Timing...">
+        <br>
+        <button onclick="addData()">Add</button>
+    </div>
+
+    <table id="outputTable">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile Details</th>
+            <th>Address</th>
+            <th>Action</th>
+            <th>Train Name</th>
+            <th>Train Number</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Train Timing</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+
+    <script>
+        function addData() {
+            let name = document.getElementById("nameInput").value;
+            let email = document.getElementById("emailInput").value;
+            let mobile = document.getElementById("numberInput").value;
+            let address = document.getElementById("addressInput").value;
+            let action = document.getElementById("actionInput").value;
+            let trainname = document.getElementById("trainnameInput").value;
+            let trainnumber = document.getElementById("trainnumberInput").value;
+            let from = document.getElementById("fromInput").value;
+            let to = document.getElementById("toInput").value;
+            let traintiming = document.getElementById("traintimingInput").value;
+
+            let table = document.getElementById("outputTable");
+            let newRow = table.insertRow(table.rows.length);
+
+            newRow.insertCell(0).innerHTML = name;
+            newRow.insertCell(1).innerHTML = email;
+            newRow.insertCell(2).innerHTML = mobile;
+            newRow.insertCell(3).innerHTML = address;
+            newRow.insertCell(4).innerHTML = action;
+            newRow.insertCell(5).innerHTML = trainname;
+            newRow.insertCell(6).innerHTML = trainnumber;
+            newRow.insertCell(7).innerHTML = from;
+            newRow.insertCell(8).innerHTML = to;
+            newRow.insertCell(9).innerHTML = traintiming;
+            newRow.insertCell(10).innerHTML =
+                '<button onclick="editData(this)">Edit</button>' +
+                '<button onclick="deleteData(this)">Delete</button>';
+
+            clearInputs();
+        }
+
+        function editData(button) {
+            let row = button.parentNode.parentNode;
+
+            let nameCell = row.cells[0];
+            let emailCell = row.cells[1];
+            let mobileCell = row.cells[2];
+            let addressCell = row.cells[3];
+            let actionCell = row.cells[4];
+            let trainnameCell = row.cells[5];
+            let trainnumberCell = row.cells[6];
+            let fromCell = row.cells[7];
+            let toCell = row.cells[8];
+            let traintimingCell = row.cells[9];
+
+            let nameInput = prompt("Enter the updated name:", nameCell.innerHTML);
+            let emailInput = prompt("Enter the updated email:", emailCell.innerHTML);
+            let numberInput = prompt("Enter the updated mobile details:", mobileCell.innerHTML);
+            let addressInput = prompt("Enter the updated address:", addressCell.innerHTML);
+            let actionInput = prompt("Enter the updated action:", actionCell.innerHTML);
+            let trainnameInput = prompt("Enter the updated train name:", trainnameCell.innerHTML);
+            let trainnumberInput = prompt("Enter the updated train number:", trainnumberCell.innerHTML);
+            let fromInput = prompt("Enter the updated departure station:", fromCell.innerHTML);
+            let toInput = prompt("Enter the updated destination station:", toCell.innerHTML);
+            let traintimingInput = prompt("Enter the updated train timing:", traintimingCell.innerHTML);
+
+            nameCell.innerHTML = nameInput;
+            emailCell.innerHTML = emailInput;
+            mobileCell.innerHTML = numberInput;
+            addressCell.innerHTML = addressInput;
+            actionCell.innerHTML = actionInput;
+            trainnameCell.innerHTML = trainnameInput;
+            trainnumberCell.innerHTML = trainnumberInput;
+            fromCell.innerHTML = fromInput;
+            toCell.innerHTML = toInput;
+            traintimingCell.innerHTML = traintimingInput;
+        }
+
+        function deleteData(button) {
+            let row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function clearInputs() {
+            document.getElementById("nameInput").value = "";
+            document.getElementById("emailInput").value = "";
+            document.getElementById("numberInput").value = "";
+            document.getElementById("addressInput").value = "";
+            document.getElementById("actionInput").value = "";
+            document.getElementById("trainnameInput").value = "";
+            document.getElementById("trainnumberInput").value = "";
+            document.getElementById("fromInput").value = "";
+            document.getElementById("toInput").value = "";
+            document.getElementById("traintimingInput").value = "";
+        }
+    </script>
+</body>
+
+</html>

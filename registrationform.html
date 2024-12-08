@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel and Tourism Site</title>
+  <style>
+    body {
+      background-image: url(locomotive.jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+      font-size: medium;
+      color: white;
+    }
+
+    h2 {
+      background-color: rgb(0, 255, 89);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    div {
+      margin-bottom: 10px;
+      font-weight: bolder;
+    }
+
+    label {
+      display: inline-block;
+      width: 150px;
+    }
+
+    table {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border-collapse: collapse;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    table th, table td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: blue;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button a {
+      text-decoration: none;
+      color: white;
+    }
+
+    .edit-btn, .delete-btn {
+      padding: 5px 10px;
+      margin: 5px;
+    }
+
+    .edit-btn {
+      background-color: yellow;
+      color: black;
+    }
+
+    .delete-btn {
+      background-color: red;
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+  <center>
+    <h2>SARDAAR RAIL TRAVEL AND TOURISM</h2><br><br><br><br>
+    <div>
+      <form id="travelForm">
+        <div>
+          <label for="from">From</label>
+          <input type="text" id="from" name="from" placeholder="Enter your station name" required />
+        </div>
+        <div>
+          <label for="to">To</label>
+          <input type="text" id="to" name="to" placeholder="Enter your station name" required />
+        </div>
+        <div>
+          <label for="route">Enter Your Route</label>
+          <input type="text" id="route" name="route" placeholder="Route" required />
+        </div>
+        <div>
+          <label for="circularjourney">Circular Journey</label>
+          <input type="text" id="circularjourney" name="circularjourney" placeholder="Circular Journey" />
+        </div>
+        <button type="submit">Save Booking</button>
+      </form>
+    </div>
+
+    <!-- Table to display bookings -->
+    <div>
+      <h3>Your Bookings</h3>
+      <table id="bookingTable">
+        <thead>
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Route</th>
+            <th>Circular Journey</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rows will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+  </center>
+
+  <script>
+    // Initialize bookings from local storage
+    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+
+    const travelForm = document.getElementById('travelForm');
+    const bookingTable = document.getElementById('bookingTable').getElementsByTagName('tbody')[0];
+
+    // Populate table with existing bookings
+    function displayBookings() {
+      bookingTable.innerHTML = '';
+      bookings.forEach((booking, index) => {
+        const row = bookingTable.insertRow();
+        row.innerHTML = `
+          <td>${booking.from}</td>
+          <td>${booking.to}</td>
+          <td>${booking.route}</td>
+          <td>${booking.circularJourney}</td>
+          <td>
+            <button class="edit-btn" onclick="editBooking(${index})">Edit</button>
+            <button class="delete-btn" onclick="deleteBooking(${index})">Delete</button>
+          </td>
+        `;
+      });
+    }
+
+    // Save booking data
+    travelForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const booking = {
+        from: travelForm.from.value,
+        to: travelForm.to.value,
+        route: travelForm.route.value,
+        circularJourney: travelForm.circularjourney.value
+      };
+
+      const editIndex = travelForm.getAttribute('data-edit-index');
+      if (editIndex !== null) {
+        bookings[editIndex] = booking;
+        travelForm.removeAttribute('data-edit-index');
+      } else {
+        bookings.push(booking);
+      }
+
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+      travelForm.reset();
+      displayBookings();
+    });
+
+    // Edit booking data
+    function editBooking(index) {
+      const booking = bookings[index];
+      travelForm.from.value = booking.from;
+      travelForm.to.value = booking.to;
+      travelForm.route.value = booking.route;
+      travelForm.circularjourney.value = booking.circularJourney;
+      travelForm.setAttribute('data-edit-index', index);
+    }
+
+    // Delete booking data
+    function deleteBooking(index) {
+      bookings.splice(index, 1);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+      displayBookings();
+    }
+
+    // Display bookings on page load
+    displayBookings();
+  </script>
+</body>
+</html>
